@@ -82,10 +82,10 @@ const Footer = () => {
                     type="text"
                     id="message-input"
                     placeholder="Type your message here"
-                    className="border-2 border-yellow-500 rounded px-2 py-1 w-40"
+                    className="border-2 border-blue-100 rounded px-2 py-1 w-40"
                   />
                   <a href="mailto:abc@gmail.com" className="flex items-center ml-2">
-                    <SendIcon className="text-yellow-500" style={{ fontSize: "26px", cursor: "pointer" }} />
+                    <SendIcon className="text-blue-100" style={{ fontSize: "26px", cursor: "pointer" }} />
                   </a>
                 </div>
               </div>

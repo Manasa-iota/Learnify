@@ -217,8 +217,8 @@ details > summary::-webkit-details-marker {
 
 /* For conditional coloring of icons in dashboard sidebar */
 .active-icon {
-  fill: #ffd60a !important;
-  color: #ffd60a !important;
+  fill: #0ad6ff !important;
+  color: #0ac2ff !important;
 }
 
 .inactive-icon {
@@ -227,8 +227,8 @@ details > summary::-webkit-details-marker {
 }
 
 /* Buttons */
-.yellowButton {
-  @apply cursor-pointer rounded-md bg-yellow-50 px-[20px] py-[8px] font-semibold text-richblack-900;
+.blueButton {
+  @apply cursor-pointer rounded-md bg-blue-300 px-[20px] py-[8px] font-semibold text-richblack-900;
 }
 
 /* Swiper CSS Starts */
@@ -260,9 +260,7 @@ details > summary::-webkit-details-marker {
 .section_heading {
   @apply text-2xl font-bold text-richblack-5 lg:text-4xl;
 }
-.navbarContainer {	
-  @apply top-0 left-0 right-0 z-50 bg-richblack-800; 
-}
+
 
 /* BackToTop.css */
 .back-to-top {
@@ -270,7 +268,7 @@ details > summary::-webkit-details-marker {
   bottom: 20px;
   right: 20px;
   z-index: 9999;
-  background-color: #FFD60A;
+  background-color: #0a84ff;
   color: #000814;
   border: none;
   padding: 10px;
@@ -291,7 +289,7 @@ details > summary::-webkit-details-marker {
 }
 
 .back-to-top:hover {
-  background-color: #FFE566;  /* Lighter yellow on hover */
+  background-color: #66faff;  /* Lighter blue on hover */
 }
 
 .back-to-top:focus {
@@ -420,11 +418,11 @@ details > summary::-webkit-details-marker {
 }
 
 .email-input input {
-  @apply p-2 rounded-l-md w-full text-sm border-2 border-yellow-50 focus:outline-none;
+  @apply p-2 rounded-l-md w-full text-sm border-2 border-blue-50 focus:outline-none;
 }
 
 .email-input a {
-  @apply bg-yellow-50 p-2 rounded-r-md;
+  @apply bg-blue-50 p-2 rounded-r-md;
 }
 
 .send-icon {

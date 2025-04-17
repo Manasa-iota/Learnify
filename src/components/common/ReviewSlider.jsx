@@ -96,7 +96,7 @@ function ReviewSlider() {
 
   return (
     <div className="text-lg">
-      <div className="my-[50px] border-2 border-white p-4 h-fitContent max-w-maxContentTab lg:max-w-maxContent">
+      <div className="my-[50px]  p-4 h-fitContent max-w-maxContentTab lg:max-w-maxContent">
         <Swiper
           slidesPerView={slidesPerView} 
           spaceBetween={30}
@@ -151,7 +151,7 @@ function ReviewSlider() {
                       fullIcon={<FaStar />}
                       />
                   </div>
-                    <h3 className="font-semibold text-yellow-100 text-center">
+                    <h3 className="font-semibold text-blue-100 text-center">
                       {review.rating.toFixed(1)}
                     </h3>
                   </div>

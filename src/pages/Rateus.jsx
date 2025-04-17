@@ -54,7 +54,7 @@ function RateUsComponent({ previousContent }) {
               return (
                 <span
                   key={starIndex}
-                  className={`text-3xl cursor-pointer transition-colors duration-300 ${starIndex <= (hoverRating || rating) ? 'text-yellow-400' : 'text-gray-300'}`}
+                  className={`text-3xl cursor-pointer transition-colors duration-300 ${starIndex <= (hoverRating || rating) ? 'text-blue-400' : 'text-gray-300'}`}
                   onMouseOver={() => handleMouseOver(starIndex)}
                   onMouseOut={handleMouseOut}
                   onClick={() => handleClick(starIndex)}
@@ -65,12 +65,12 @@ function RateUsComponent({ previousContent }) {
             })}
           </div>
           {errorRating && (
-            <span className="text-xs text-yellow-100 mb-4 block text-center">
+            <span className="text-xs text-blue00 mb-4 block text-center">
               *Please enter a rating.
             </span>
           )}
           <motion.textarea
-            className="w-full h-40 p-3 bg-richblack-700 text-richblack-5 placeholder:text-richblack-400 border border-richblack-600 rounded-md shadow-sm focus:outline-none focus:border-yellow-300 focus:ring-1 focus:ring-yellow-300 transition-all duration-200"
+            className="w-full h-40 p-3 bg-richblack-700 text-richblack-5 placeholder:text-richblack-400 border border-richblack-600 rounded-md shadow-sm focus:outline-none focus:border-blueus:ring-1 focus:ring-blueon-200"
             placeholder="Enter feedback here"
             value={feedback}
             onChange={handleFeedbackChange}
@@ -79,13 +79,13 @@ function RateUsComponent({ previousContent }) {
             transition={{ duration: 0.2, ease: 'easeInOut' }}
           />
           {errorFeedback && (
-            <label className="text-xs text-yellow-100 mt-2 block text-center">
+            <label className="text-xs text-blue-100 mt-2 block text-center">
               *Please enter feedback.
             </label>
           )}
           <div className="mt-8">
             <button
-              className="w-full py-3 bg-yellow-50 text-black font-semibold text-lg rounded-md shadow-md transition-transform duration-200 hover:scale-95 hover:shadow-none"
+              className="w-full py-3 bg-bluetext-black font-semibold text-lg rounded-md shadow-md transition-transform duration-200 hover:scale-95 hover:shadow-none"
               onClick={handleSubmit}
             >
               Submit

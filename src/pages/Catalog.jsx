@@ -64,7 +64,7 @@ const Catalog = () => {
             <div className="mx-auto flex min-h-[260px] max-w-maxContentTab flex-col justify-center gap-4 lg:max-w-maxContent ">
               <p className="text-sm text-richblack-300">
                 {`Home / Catalog / `}
-                <span className="text-yellow-25">
+                <span className="text-blue-100">
                   {catalogPageData?.data?.selectedCategory?.name}
                 </span>
               </p>
@@ -84,7 +84,7 @@ const Catalog = () => {
               <p
                 className={`px-4 py-2 ${
                   active === 1
-                    ? "border-b border-b-yellow-25 text-yellow-25"
+                    ? "border-b border-b-blue-100 text-blue-100"
                     : "text-richblack-50"
                 } cursor-pointer`}
                 onClick={() => setActive(1)}
@@ -94,7 +94,7 @@ const Catalog = () => {
               <p
                 className={`px-4 py-2 ${
                   active === 2
-                    ? "border-b border-b-yellow-25 text-yellow-25"
+                    ? "border-b border-b-blue-100 text-blue-100"
                     : "text-richblack-50"
                 } cursor-pointer`}
                 onClick={() => setActive(2)}
@@ -121,18 +121,19 @@ const Catalog = () => {
           </div>
     
           {/* Section 3 */}
-          <div className=" mx-auto box-content w-full max-w-maxContentTab px-4 py-12 lg:max-w-maxContent">
-            <div className="section_heading">Frequently Bought</div>
-            <div className="py-8">
-              <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-                {catalogPageData?.data?.mostSellingCourses
-                  ?.slice(0, 4)
-                  .map((course, i) => (
-                    <Course_Card course={course} key={i} Height={"h-[400px]"} />
-                  ))}
-              </div>
-            </div>
-          </div>
+          <div className="mx-auto box-content px-4 py-12 lg:px-20">
+  <div className="section_heading">Frequently Bought</div>
+  <div className="py-8">
+    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
+      {catalogPageData?.data?.mostSellingCourses
+        ?.slice(0, 4)
+        .map((course, i) => (
+          <Course_Card course={course} key={i} Height="h-[250px]" />
+        ))}
+    </div>
+  </div>
+</div>
+
     
           <Footer />
         </>

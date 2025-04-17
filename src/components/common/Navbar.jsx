@@ -1,14 +1,16 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { AiOutlineMenu, AiOutlineShoppingCart } from "react-icons/ai";
 import { BsChevronDown } from "react-icons/bs";
+import { BsChevronUp } from "react-icons/bs";
 import logo from "../../assets/Logo/Logo-Full-Light.png";
 import { NavbarLinks } from "../../data/navbar-links";
 import { apiConnector } from "../../services/apiconnector";
 import { categories } from "../../services/apis";
 import { ACCOUNT_TYPE } from "../../utils/constants";
 import ProfileDropdown from "../core/Auth/ProfileDropDown";
+import { login } from "../../services/operations/authAPI";
 import ProgressBar from "./progressbar";
 
 function Navbar() {
@@ -16,12 +18,16 @@ function Navbar() {
   const { user } = useSelector((state) => state.profile);
   const { totalItems } = useSelector((state) => state.cart);
   const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [subLinks, setSubLinks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [dropdownOpenCatalog, setDropdownOpenCatalog] = useState(false);
+  const [dropdownOpenLogin, setDropdownOpenLogin] = useState(false);
+  const [selectedRole, setSelectedRole] = useState(null);
 
-  // Fetch Categories on Mount
   useEffect(() => {
     const fetchCategories = async () => {
       setLoading(true);
@@ -30,91 +36,95 @@ function Navbar() {
         setSubLinks(res?.data?.data || []);
       } catch (error) {
         console.error("Could not fetch Categories.", error);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
-
     fetchCategories();
   }, []);
 
+  const loginHandle = (role) => {
+    const credentials = {
+      student: { email: "studentdemo1729@gmail.com", password: "Student@1729" },
+      instructor: { email: "instructordemo1729@gmail.com", password: "Instructor@1729" },
+    };
+    const { email, password } = credentials[role];
+    dispatch(login(email, password, navigate));
+  };
+
   const matchRoute = (route) => location.pathname === route;
 
-  // Handlers
   const toggleMobileMenu = () => setMobileMenuOpen((prev) => !prev);
   const closeMobileMenu = () => setMobileMenuOpen(false);
-  const toggleDropdown = useCallback(() => setDropdownOpen((prev) => !prev), []);
-  const handleMouseEnter = () => setDropdownOpen(true);
-  const handleMouseLeave = () => setDropdownOpen(false);
+  const toggleCatalogDropdown = useCallback(() => setDropdownOpenCatalog((prev) => !prev), []);
+  const toggleLoginDropdown = useCallback(() => setDropdownOpenLogin((prev) => !prev), []);
 
   return (
     <>
-      <div className="navbarContainer sticky top-0 left-0 z-1000">
-        <div className="flex items-center justify-center bg-black border-b-[1px] border-b-richblack-800">
-          <div className="flex flex-col md:flex-row w-full max-w-maxContent items-center justify-between px-4 py-2">
-            
-            {/* Logo and Mobile Menu */}
-            <div className="flex items-center justify-between w-full md:w-auto px-1 py-1">
+      <div className="navbarContainer sticky top-0 left-0 z-[1000]">
+        <div className="flex items-center justify-center border-richblack-800">
+          <div className="flex flex-col md:flex-row w-full max-w-maxContent items-center justify-between px-4 py-1">
+
+            {/* Logo and Mobile Toggle */}
+            <div className="flex items-center justify-between w-full md:w-auto">
               <Link to="/" onClick={closeMobileMenu}>
                 <img src={logo} alt="Logo" width={170} height={32} loading="lazy" />
               </Link>
-              <button
-                className="block md:hidden text-2xl text-richblack-25 focus:outline-none"
-                onClick={toggleMobileMenu}
-              >
+              <button className="md:hidden text-2xl text-richblack-25" onClick={toggleMobileMenu}>
                 {mobileMenuOpen ? "✖" : <AiOutlineMenu />}
               </button>
             </div>
 
             {/* Navigation Links */}
             <nav className={`${mobileMenuOpen ? "block" : "hidden"} md:block mt-4 md:mt-0`}>
-              <ul className="flex flex-col md:flex-row w-full max-w-maxContent items-center justify-between px-4 py-2 gap-y-4 md:gap-y-0 md:gap-x-14">
+              <ul className="flex flex-col md:flex-row items-center gap-y-4 md:gap-y-0 md:gap-x-14">
                 {NavbarLinks.map(({ title, path }, index) => (
-                  <li
-                    key={index}
-                    onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}
-                    className="mb-2 md:mb-0 transition duration-300 ease-in-out transform hover:text-yellow-25 hover:scale-105
-                      relative after:content-[''] after:absolute after:w-0 after:h-0.5 after:bg-yellow-50 after:bottom-0 after:left-0 
-                      after:transition-all after:duration-700 after:ease-in-out hover:after:w-full "
-                  >
-                    {title === "Catalog" ? (
-                      <div
-                        className={`group relative flex cursor-pointer items-center gap-1 ${
-                          matchRoute("/catalog/:catalogName")
-                            ? "text-yellow-100 hover:text-yellow-200"
-                            : "text-richblack-25 hover:text-richblack-50"
-                        }`}
-                        onClick={toggleDropdown}
-                      >
-                        <p>{title}</p>
-                        <BsChevronDown />
-                        {dropdownOpen && (
-                          <div className="absolute left-[50%] top-[50%] z-[1000] flex w-[200px] translate-x-[-50%] translate-y-[3em] flex-col rounded-lg bg-richblack-5 p-4 text-richblack-900 opacity-100 transition-all duration-150">
-                            <div className="absolute left-[50%] top-0 -z-10 h-6 w-6 translate-x-[80%] translate-y-[-40%] rotate-45 select-none rounded bg-richblack-5"></div>
-                            {loading ? (
-                              <p className="text-center">Loading...</p>
-                            ) : subLinks?.length ? (
-                              subLinks
-                                .filter((subLink) => subLink?.courses?.length > 0)
-                                .map((subLink, i) => (
-                                  <Link
-                                    to={`/catalog/${subLink.name.split(" ").join("-").toLowerCase()}`}
-                                    className="rounded-lg bg-transparent py-4 pl-4 hover:bg-richblack-500"
-                                    key={i}
-                                    onClick={closeMobileMenu}
-                                  >
-                                    <p>{subLink.name}</p>
-                                  </Link>
-                                ))
-                            ) : (
-                              <p className="text-center">No Courses Found</p>
-                            )}
-                          </div>
-                        )}
-                      </div>
+                  <li key={index} className="relative group">
+                    
+{title === "Catalog" ? (
+  <div
+    className="relative group"
+    
+  >
+    <div
+      className={`flex items-center gap-1 cursor-pointer ${
+        matchRoute("/catalog/:catalogName") ? "text-blue-100" : "text-richblack-25"
+      } hover:text-blue-200`}
+      onClick={toggleCatalogDropdown}
+    >
+      <p>{title}</p>
+      {dropdownOpenCatalog ? <BsChevronUp /> : <BsChevronDown />}
+
+    </div>
+
+    {dropdownOpenCatalog && (
+      <div className="absolute top-full left-1/2 z-50 w-56 -translate-x-1/2 mt-2 rounded-lg bg-richblack-5 text-richblack-900 p-4 shadow-lg">
+        {loading ? (
+          <p className="text-center">Loading...</p>
+        ) : subLinks?.length ? (
+          subLinks
+            .filter((subLink) => subLink?.courses?.length > 0)
+            .map((subLink, i) => (
+              <Link
+                key={i}
+                to={`/catalog/${subLink.name.split(" ").join("-").toLowerCase()}`}
+                className="block px-4 py-2 rounded hover:bg-richblack-500"
+                onClick={closeMobileMenu}
+              >
+                {subLink.name}
+              </Link>
+            ))
+        ) : (
+          <p className="text-center">No Courses Found</p>
+        )}
+      </div>
+    )}
+  </div>
+
+
                     ) : (
                       <Link to={path} onClick={closeMobileMenu}>
-                        <p className={`${matchRoute(path) ? "text-yellow-25" : "text-richblack-25"} hover:text-yellow-25`}>
+                        <p className={`${matchRoute(path) ? "text-blue-25" : "text-richblack-25"} hover:text-blue-25`}>
                           {title}
                         </p>
                       </Link>
@@ -124,31 +134,52 @@ function Navbar() {
               </ul>
             </nav>
 
-            {/* Cart and Authentication */}
-            <div className={`${mobileMenuOpen ? "block" : "hidden"} md:block mt-2 md:mt-0`}>
-              <div className="flex flex-col items-center md:flex-row gap-y-4 md:gap-y-0 gap-x-8">
+            {/* Cart & Login/Profile */}
+            <div className={`${mobileMenuOpen ? "block" : "hidden"} md:block mt-4 md:mt-0`}>
+              <div className="flex flex-col md:flex-row items-center gap-y-4 md:gap-y-0 gap-x-8">
+                {/* Cart */}
                 {user && user.accountType !== ACCOUNT_TYPE.INSTRUCTOR && (
                   <Link to="/dashboard/cart" className="relative" onClick={closeMobileMenu}>
                     <AiOutlineShoppingCart className="text-2xl text-richblack-100" />
                     {totalItems > 0 && (
-                      <span className="absolute -bottom-2 -right-2 grid h-5 w-5 place-items-center rounded-full bg-richblack-600 text-xs font-bold text-yellow-500">
+                      <span className="absolute -bottom-2 -right-2 h-5 w-5 flex items-center justify-center rounded-full bg-richblack-600 text-xs font-bold text-blue-500">
                         {totalItems}
                       </span>
                     )}
                   </Link>
                 )}
+
+                {/* Auth */}
                 {!token ? (
-                  <div className="flex flex-col md:flex-row items-center gap-y-4 md:gap-y-0 md:gap-x-4">
-                    <Link to="/login" onClick={closeMobileMenu}>
-                      <button className="rounded-md px-4 py-2 bg-yellow-50 text-black hover:bg-richblack-800 hover:text-white">
-                        Log In
-                      </button>
-                    </Link>
-                    <Link to="/signup" onClick={closeMobileMenu}>
-                      <button className="rounded-md px-4 py-2 bg-yellow-50 text-black hover:bg-richblack-800 hover:text-white">
-                        Sign Up
-                      </button>
-                    </Link>
+                  <div className="relative">
+                    <button className="text-white flex items-center gap-2" onClick={toggleLoginDropdown}>
+                      {selectedRole ? `Login as ${selectedRole}` : "Login As"}
+                      {dropdownOpenLogin ? <BsChevronUp /> : <BsChevronDown />}
+                    </button>
+                    {dropdownOpenLogin && (
+                      <div className="absolute top-12 left-0 bg-white border rounded-md shadow-lg w-32 z-[999]">
+                        <button
+                          className="block w-full px-4 py-2 text-left hover:bg-gray-200"
+                          onClick={() => {
+                            loginHandle("student");
+                            setSelectedRole("Student");
+                            setDropdownOpenLogin(false);
+                          }}
+                        >
+                          Student
+                        </button>
+                        <button
+                          className="block w-full px-4 py-2 text-left hover:bg-gray-200"
+                          onClick={() => {
+                            loginHandle("instructor");
+                            setSelectedRole("Instructor");
+                            setDropdownOpenLogin(false);
+                          }}
+                        >
+                          Instructor
+                        </button>
+                      </div>
+                    )}
                   </div>
                 ) : (
                   <ProfileDropdown />

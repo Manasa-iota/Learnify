@@ -9,8 +9,8 @@ function LoginForm() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+    email: "studentdemo1729@gmail.com",
+    password: "Student@1729",
   })
 
   const [showPassword, setShowPassword] = useState(false)
@@ -90,7 +90,7 @@ function LoginForm() {
       </label>
       <button
         type="submit"
-        className="mt-6 rounded-[8px] bg-yellow-50 py-[8px] px-[12px] font-medium text-richblack-900"
+        className="mt-6 rounded-[8px] bg-blue-100 py-[8px] px-[12px] font-medium text-richblack-900"
       >
         Sign In
       </button>
