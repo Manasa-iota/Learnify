@@ -12,7 +12,7 @@ const mailSender = async (email, title, body) => {
                     pass: process.env.MAIL_PASS,
                 }
             })
-
+            console.log(process.env.MAIL_HOST,process.env.MAIL_USER,process.env.MAIL_PASS);
 
             let info = await transporter.sendMail({
                 from: 'Learnify',
