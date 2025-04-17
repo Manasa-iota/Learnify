@@ -6,14 +6,16 @@ import bg from "../../assets/Images/loaderbg.jpg"
 const Loading = () => {
   return (
     <>
-      <div style={{ ...styles.loaderContainer, backgroundColor:"#000814" }}>
-        <img 
-          src={loadingGif}
-          alt="Loading GIF" 
-          style={styles.gif} 
-        />
-        <PropagateLoader size={15} color={"white"} loading={true} />
-      </div>
+     <div style={{ ...styles.loaderContainer, backgroundColor:"#000814" }}>
+  <iframe 
+    src="https://assets.pinterest.com/ext/embed.html?id=6896205672556728" 
+    height="277" 
+    width="236" 
+    frameBorder="0" 
+    scrolling="no"
+  ></iframe>
+</div>
+
     </>
   );
 };
