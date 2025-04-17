@@ -31,18 +31,6 @@ The platform includes **user authentication, course management, payment integrat
 
 ---
 
-## 🏗 **System Architecture**  
-
-The Learnify platform follows a **client-server architecture**:  
-1. **Frontend (Client)** – Handles user interactions and communicates with the backend via REST APIs.  
-2. **Backend (Server)** – Manages authentication, courses, and payments.  
-3. **Database** – Stores user details, course data, transactions, and more.
-   ![image](https://github.com/user-attachments/assets/f1d3c333-56fe-4347-8431-f47ac84283c5)
-
-
-4. **🖼 Architecture Diagram:** 
-  ![image](https://github.com/user-attachments/assets/20a879b2-6a5b-4a67-800d-1c79a8994998)
-
 
 ---
 
