@@ -1,41 +1,42 @@
 import React from 'react';
-import { PropagateLoader } from 'react-spinners';
-import loadingGif from '../../assets/Images/preloader.gif';
-import bg from "../../assets/Images/loaderbg.jpg"
+import Lottie from "lottie-react";
+import animationData from "../../assets/Images/loader.json";
 
 const Loading = () => {
   return (
-    <>
-      <div style={{ ...styles.loaderContainer, backgroundColor:"#000814" }}>
-        <img 
-          src={loadingGif}
-          alt="Loading GIF" 
-          style={styles.gif} 
-        />
-        <PropagateLoader size={15} color={"white"} loading={true} />
+    <div style={styles.loaderWrapper}>
+      <div style={styles.loaderBox}>
+        <Lottie animationData={animationData} loop autoplay style={styles.lottie} />
       </div>
-    </>
+    </div>
   );
 };
 
 const styles = {
-  loaderContainer: {
+  loaderWrapper: {
     display: 'flex',
-    flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '100vw', 
     height: '100vh',
-    backgroundColor: 'white', 
-    backgroundSize: 'cover', 
-    backgroundPosition: 'center', 
+    backgroundColor: '#000814',
+    padding: '20px',
+    boxSizing: 'border-box',
   },
-  gif: {
-    marginBottom: '20px',
-    height: '250px',
-    width: 'auto',
-    backgroundColor: 'none'
+  loaderBox: {
+    width: '40vw',                 // Responsive width
+    maxWidth: '250px',             // Prevent too big on large screens
+    minWidth: '150px',             // Prevent too small on small screens
+    aspectRatio: '1',              // Keeps it square
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#000814',
+    borderRadius: '12px',
   },
+  lottie: {
+    width: '100%',
+    height: '100%',
+  }
 };
 
 export default Loading;
