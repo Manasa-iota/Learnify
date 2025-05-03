@@ -12,10 +12,6 @@ export const NavbarLinks = [
     path: "/about",
   },
   {
-    title: "Contact Us",
-    path: "/contact",
-  },
-  {
     title:"Rate Us",
     path:"/rateus",
   }
