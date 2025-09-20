@@ -58,6 +58,12 @@ function Navbar() {
   const closeMobileMenu = () => setMobileMenuOpen(false);
   const toggleCatalogDropdown = useCallback(() => setDropdownOpenCatalog((prev) => !prev), []);
   const toggleLoginDropdown = useCallback(() => setDropdownOpenLogin((prev) => !prev), []);
+  const fallbackCategories = [
+  { name: "Web Development" },
+  { name: "Programming Languages" },
+  { name: "Data Science" },
+  ];
+
 
   return (
     <>
@@ -99,9 +105,18 @@ function Navbar() {
 
     {dropdownOpenCatalog && (
       <div className="absolute top-full left-1/2 z-50 w-56 -translate-x-1/2 mt-2 rounded-lg bg-richblack-5 text-richblack-900 p-4 shadow-lg">
-        {loading ? (
-          <p className="text-center">Loading...</p>
-        ) : subLinks?.length ? (
+        {loading ?(
+        fallbackCategories.map((subLink, i) => (
+        <Link
+          key={i}
+          to={`/catalog/${subLink.name.split(" ").join("-").toLowerCase()}`}
+          className="block px-4 py-2 rounded hover:bg-richblack-500"
+          onClick={closeMobileMenu}
+        >
+          {subLink.name}
+        </Link>
+  ))
+) : subLinks?.length ? (
           subLinks
             .filter((subLink) => subLink?.courses?.length > 0)
             .map((subLink, i) => (
